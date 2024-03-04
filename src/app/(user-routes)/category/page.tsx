@@ -64,7 +64,7 @@ export default function Category() {
     <>
       <div className="max-w-5xl mx-auto flex flex-col gap-6 mt-10 p-5 xl:p-0">
         <div className="flex flex-col gap-3 sm:flex-row justify-between">
-          <h1 className="font-bold text-2xl">Categories List</h1>
+          <h1 className="font-bold text-2xl">Categories list</h1>
           <CategoryForm loadFunction={handleLoad} />
         </div>
         <Table className="">
@@ -84,7 +84,7 @@ export default function Category() {
                     className="hover:scale-105 transition-all"
                     onClick={() => handleDelete(category.id)}
                   >
-                    <TrashIcon className="size-4" />
+                    <TrashIcon className="size-5" />
                   </Button>
                 </TableCell>
               </TableRow>

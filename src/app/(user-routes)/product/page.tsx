@@ -87,7 +87,7 @@ export default function ProductPage() {
                     className="hover:scale-105 transition-all"
                     onClick={() => handleDelete(product.id)}
                   >
-                    <TrashIcon className="size-4" />
+                    <TrashIcon className="size-5" />
                   </Button>
                 </TableCell>
               </TableRow>
