@@ -1,8 +1,9 @@
+import { ThemeProvider } from "@/components/theme-provider";
+import NextAuthSessionProvider from "@/providers/sessionProvider";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { Toaster } from 'sonner';
 import "./globals.css";
-import { ThemeProvider } from "@/components/theme-provider";
-import Nav from "@/components/nav";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,15 +23,21 @@ export default function RootLayout({
       <body
         className={`${inter.className} min-h-screen bg-background antialiased`}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <Nav />
-          {children}
-        </ThemeProvider>
+        <NextAuthSessionProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+            <Toaster
+              richColors
+              closeButton={true}
+              toastOptions={{ duration: 3000 }}
+              position="top-right" />
+          </ThemeProvider>
+        </NextAuthSessionProvider>
       </body>
     </html>
   );
