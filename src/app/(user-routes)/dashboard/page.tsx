@@ -1,11 +1,13 @@
 "use client"
 import { setupAPIClient } from "@/app/api/axios/api"
+import EmptyState from "@/components/empty-state"
+import OrderDetail from "@/components/order-detail"
 import { Button } from "@/components/ui/button"
 import { TrashIcon, UpdateIcon } from "@radix-ui/react-icons"
 import { useSession } from "next-auth/react"
 import { useEffect, useState } from "react"
 
-export async function loadOrders(token: string) {
+async function loadOrders(token: string) {
   const api = setupAPIClient(token)
   const response = await api.get('/order');
   if (response.data) {
@@ -36,7 +38,7 @@ export default function Dashboard() {
         <div className="flex items-center gap-2">
           <h1 className="font-bold text-xl sm:text-3xl">Last Orders</h1>
           <Button
-          onClick={handleLoad}
+            onClick={handleLoad}
             variant="ghost"
             className="text-lime-500 hover:text-lime-700 hover:bg-transparent hover:cursor-pointer hover:scale-110 transition-all p-2"
           >
@@ -45,26 +47,27 @@ export default function Dashboard() {
         </div>
 
         <ul className="flex flex-col gap-5 w-full">
-          {orders.map(order => (
-            <li
-              key={order.id}
-              className="flex items-center overflow-hidden gap-2 h-14 
-              rounded-md dark:bg-zinc-900 bg-zinc-100 shadow-lg  text-lg font-semibold
-              hover:scale-110 hover:cursor-pointer"
-            >
-              <div className="h-full w-4 bg-lime-500 animate-pulse"></div>
-              <div className="w-full pr-3 flex justify-between items-center">
-                <span>
-                  {`Table ${order.table}`}
-                </span>
-                <Button
-                  variant="destructive"
-                  className="hover:scale-105">
-                  <TrashIcon className="size-5" />
-                </Button>
-              </div>
-            </li>
-          ))}
+          {orders.length
+            ?
+            orders.map(order => (
+              <li
+                key={order.id}
+                className="flex items-center overflow-hidden gap-2 h-14 
+            rounded-md dark:bg-zinc-900 bg-zinc-100 shadow-lg  text-lg font-semibold
+            hover:scale-110 hover:cursor-pointer transition-all"
+              >
+                <div className="h-full w-4 bg-lime-500 animate-pulse"></div>
+                <OrderDetail
+                  loadFunction={handleLoad}
+                  orderId={order.id}
+                  orderName={order.name}
+                  tableNumber={order.table} />
+              </li>
+            ))
+            :
+            <EmptyState />
+          }
+
 
         </ul>
       </div>

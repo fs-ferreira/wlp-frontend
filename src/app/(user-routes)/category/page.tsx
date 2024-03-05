@@ -2,6 +2,7 @@
 
 import { setupAPIClient } from "@/app/api/axios/api";
 import CategoryForm from "@/components/category-form";
+import EmptyState from "@/components/empty-state";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -64,33 +65,39 @@ export default function Category() {
     <>
       <div className="max-w-5xl mx-auto flex flex-col gap-6 mt-10 p-5 xl:p-0">
         <div className="flex flex-col gap-3 sm:flex-row justify-between">
-          <h1 className="font-bold text-2xl">Categories list</h1>
+          <h1 className="font-bold text-2xl">Categories</h1>
           <CategoryForm loadFunction={handleLoad} />
         </div>
-        <Table className="">
-          <TableHeader>
-            <TableRow className="h-[60px]">
-              <TableHead className="w-4/6">Name</TableHead>
-              <TableHead className="text-center">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {categories.map((category: any) => (
-              <TableRow key={category.id} className="text-sm h-[60px]">
-                <TableCell className="font-medium max-h-">{category.name}</TableCell>
-                <TableCell className="text-center">
-                  <Button
-                    variant={"destructive"}
-                    className="hover:scale-105 transition-all"
-                    onClick={() => handleDelete(category.id)}
-                  >
-                    <TrashIcon className="size-5" />
-                  </Button>
-                </TableCell>
+        {categories.length
+          ?
+          <Table>
+            <TableHeader>
+              <TableRow className="h-[60px]">
+                <TableHead className="w-4/6">Name</TableHead>
+                <TableHead className="text-center">Actions</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {categories.map((category: any) => (
+                <TableRow key={category.id} className="text-sm h-[60px]">
+                  <TableCell className="font-medium max-h-">{category.name}</TableCell>
+                  <TableCell className="text-center">
+                    <Button
+                      variant={"destructive"}
+                      className="hover:scale-105 transition-all"
+                      onClick={() => handleDelete(category.id)}
+                    >
+                      <TrashIcon className="size-5" />
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          :
+          <EmptyState />
+        }
+
       </div>
 
     </>

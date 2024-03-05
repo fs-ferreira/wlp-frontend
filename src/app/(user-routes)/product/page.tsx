@@ -1,6 +1,7 @@
 "use client"
 
 import { setupAPIClient } from "@/app/api/axios/api";
+import EmptyState from "@/components/empty-state";
 import ProductForm from "@/components/product-form";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -61,39 +62,45 @@ export default function ProductPage() {
     <>
       <div className="max-w-5xl mx-auto flex flex-col gap-6 mt-10 p-5 xl:p-0">
         <div className="flex flex-col gap-3 sm:flex-row justify-between">
-          <h1 className="font-bold text-2xl">Products list</h1>
+          <h1 className="font-bold text-2xl">Products</h1>
           <ProductForm loadFunction={handleLoad} />
         </div>
-        <Table className="">
-          <TableHeader>
-            <TableRow className="h-[60px]">
-              <TableHead className="">Name</TableHead>
-              <TableHead className="">Description</TableHead>
-              <TableHead className="">Price</TableHead>
-              <TableHead className="">Category</TableHead>
-              <TableHead className="text-center">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {products.map((product: any) => (
-              <TableRow key={product.id} className="text-sm h-[60px]">
-                <TableCell>{product.name}</TableCell>
-                <TableCell>{product.description}</TableCell>
-                <TableCell>{product.price}</TableCell>
-                <TableCell>{product.category.name}</TableCell>
-                <TableCell className="text-center">
-                  <Button
-                    variant={"destructive"}
-                    className="hover:scale-105 transition-all"
-                    onClick={() => handleDelete(product.id)}
-                  >
-                    <TrashIcon className="size-5" />
-                  </Button>
-                </TableCell>
+        {products.length
+          ?
+          <Table className="">
+            <TableHeader>
+              <TableRow className="h-[60px]">
+                <TableHead className="">Name</TableHead>
+                <TableHead className="">Description</TableHead>
+                <TableHead className="">Price($)</TableHead>
+                <TableHead className="">Category</TableHead>
+                <TableHead className="text-center">Actions</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {products.map((product: any) => (
+                <TableRow key={product.id} className="text-sm h-[60px]">
+                  <TableCell>{product.name}</TableCell>
+                  <TableCell>{product.description}</TableCell>
+                  <TableCell>{parseFloat(product.price).toFixed(2)}</TableCell>
+                  <TableCell>{product.category.name}</TableCell>
+                  <TableCell className="text-center">
+                    <Button
+                      variant={"destructive"}
+                      className="hover:scale-105 transition-all"
+                      onClick={() => handleDelete(product.id)}
+                    >
+                      <TrashIcon className="size-5" />
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          :
+          <EmptyState />
+        }
+
       </div>
 
     </>
