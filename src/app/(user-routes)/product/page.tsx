@@ -26,10 +26,12 @@ async function loadData(token: string, category_id?: string) {
 
 export default function ProductPage() {
   const [realoadList, setReloadList] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [products, setProducts] = useState([])
   const { data: session, status } = useSession()
 
   useEffect(() => {
+    setLoading(true)
     const baseCondition = status === "authenticated"
     const initialCondition = baseCondition && !products.length
     const userBehaviorCondition = baseCondition && realoadList
@@ -42,6 +44,7 @@ export default function ProductPage() {
     await loadData(session!.token).then(async res => {
       await setProducts(res)
       setReloadList(false)
+      setLoading(false)
     })
   }
 
@@ -98,7 +101,7 @@ export default function ProductPage() {
             </TableBody>
           </Table>
           :
-          <EmptyState />
+          !loading && <EmptyState />
         }
 
       </div>

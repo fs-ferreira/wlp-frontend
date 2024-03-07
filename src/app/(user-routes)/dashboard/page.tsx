@@ -18,14 +18,17 @@ async function loadOrders(token: string) {
 
 export default function Dashboard() {
   const [orders, setOrders] = useState([])
+  const [loading, setLoading] = useState(true)
   const { data: session, status } = useSession()
 
   async function handleLoad() {
     const data = await loadOrders(session.token)
     setOrders(data)
+    setLoading(false)
   }
 
   useEffect(() => {
+    setLoading(true)
     const baseCondition = status === "authenticated"
     if (baseCondition) {
       handleLoad();
@@ -65,7 +68,7 @@ export default function Dashboard() {
               </li>
             ))
             :
-            <EmptyState />
+            !loading && <EmptyState />
           }
 
 

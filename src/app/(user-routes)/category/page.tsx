@@ -28,10 +28,12 @@ export async function loadCategories(token: string) {
 
 export default function Category() {
   const [realoadList, setReloadList] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [categories, setCategories] = useState([])
   const { data: session, status } = useSession()
 
   useEffect(() => {
+    setLoading(true)
     const baseCondition = status === "authenticated"
     const initialCondition = baseCondition && !categories.length
     const userBehaviorCondition = baseCondition && realoadList
@@ -41,9 +43,10 @@ export default function Category() {
   }, [status, realoadList])
 
   async function handleLoad() {
-    await loadCategories(session!.token).then(async res => {
-      await setCategories(res)
+    await loadCategories(session!.token).then(res => {
+      setCategories(res)
       setReloadList(false)
+      setLoading(false)
     })
   }
 
@@ -95,7 +98,7 @@ export default function Category() {
             </TableBody>
           </Table>
           :
-          <EmptyState />
+          !loading && <EmptyState />
         }
 
       </div>
